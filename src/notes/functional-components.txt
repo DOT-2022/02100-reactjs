@@ -1,0 +1,26 @@
+Functional components is same as the js function which runs the code from top to bottom.
+
+We have to understand who does a function component will get rendered?
+Unlike, class component a functional component will get rendered in below cases:
+1. React will constantly check if the value of the useEffect initial value is same after setting the state of the local or the value of the props
+is changed. 
+    - This means that while using a HOOKS, if the value of the local state changes the react will re render the function again.
+    - When the value of the props that is passed to the component changes then the functional components gets re-rendered.
+
+========================================================================================================================================
+
+When a functional component receives input and is rendered, React uses props and updates the virtual DOM to ensure the UI reflects the current state.
+
+- Props: 
+    Functional components receive input data through props, which are objects containing key-value pairs.
+
+- Processing Props: 
+    After receiving props, the component processes them and returns a JSX element that defines the component's structure and content.
+
+- Virtual DOM: 
+    When the component is rendered, React creates a virtual DOM tree that represents the current state of the application.
+
+- Re-rendering: 
+    If the component's props or state change, React updates the virtual DOM tree accordingly and triggers the component to re-render.
+
+========================================================================================================================================

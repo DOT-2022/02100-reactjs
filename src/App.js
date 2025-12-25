@@ -1,53 +1,50 @@
 import './App.css';
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import CardList from './components/card-list/card-list.component';
 import SearchBox from './components/search-box/search-box.component'
 
-class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      monsters: [],
-      searchText: ''
-    };
-  }
+// Functions in a Functional components are all pure functions
+// We don't have a Lifecycle methods in functional components
+// But the way the react works is same phases constructor - render - update - unmount
 
-  componentDidMount() {
-    // Like init method. Component did mount will run only when the moment the component gets loaded on the DOM this lifecycle method will get executed.
+// A functions when its invoked, it will get read from top to bottom and returns something and done.
+// Since its a pure function 
+const App = () => {
+  //Array Destructuring
+  // UseState gives us 2 values [value, setValue]
+  const [searchField, setSearchField] = useState('');
+  const [monsters, setMonsters] = useState([]);
+  const [filteredMonsters, setFilteredMonsters] = useState(monsters);
+
+  // CREATING SIDE EFFECT
+  useEffect(()=>{
     fetch('https://jsonplaceholder.typicode.com/users')
     .then((response) => response.json())
-    .then((users) => this.setState(() => {
-      return {monsters : users}
-    }, () => {
-      console.log(this.state);
-    }));
+    .then((users) => setMonsters(users));
+  }, []);
+
+  useEffect(() => {
+    const newFilteredMonster  = monsters.filter((monster) => {
+      return monster.name.toLocaleLowerCase().includes(searchField);
+    });
+    setFilteredMonsters(newFilteredMonster);
+  }, [
+    monsters,
+    searchField
+  ]);
+
+  const onSearchChanged = (event) => {
+    const searchFieldString  = event.target.value.toLocaleLowerCase();
+    setSearchField(searchFieldString);
   }
 
-  onSearchChanged = (event) => {
-              const searchText  = event.target.value.toLocaleLowerCase()
-              this.setState(() => {
-                return {searchText}
-              });
-            }
-
-  render() {
-    const {monsters, searchText} = this.state
-    const {onSearchChanged} = this
-
-    const newFilteredMonster = monsters.filter(
-              (monster) => {
-                return monster.name.toLocaleLowerCase().includes(searchText)
-              });
-
-    return (
-      <div className="App">
-        <h1 className='app-title'>Monsters Rolodex</h1>
-        <SearchBox onChangeHandler = {onSearchChanged} placeholder = 'Search Monsters' className = 'search-box' />
-        <CardList monsters={newFilteredMonster} className= 'custom-list' />
-      </div>
-    )
-  }
+  return (
+    <div className='App'>
+      <h1 className='app-title'>Monster Rolodex</h1>
+      <SearchBox onChangeHandler = {onSearchChanged} placeholder = 'Search Monsters' className = 'search-box' />
+      <CardList monsters={filteredMonsters} />
+    </div>
+  );
 }
 
-  
 export default App;
