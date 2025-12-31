@@ -1,0 +1,65 @@
+Pure functions:
+
+A function should always do is it should return an exact same result no matter how many times it is called when its given the same arguments
+
+const pureFun = (a,b) => {
+    return a + b;
+}
+
+Here, in this above example the above preFun will always return the number 2 when I pass 2 arguments a=1 and b=1
+
+a = 1;
+b = 1;
+
+console.log(pureFun(a,b)); 
+
+
+However, 
+
+Impure Function:
+
+in similar way there can be a case where a function might depend on the external value or variables that can change in that case the output 
+of the function might change as the value of c changes. This function is then termed as an impure function
+
+Let's say we have a function that will do the following
+
+let c = 10 
+
+const functionA = (a,b) => {
+    return a + b + c
+}
+
+now, when we try to call functionA by passing same value 2,4 then it returns 16. This functin will return 16 whenever the value of c doesn't changes
+The moment c's value changes to 15 then the result of the functionA changes to 21 irrespective of a and b values are still 2,4
+
+Such a function is called an impure functions
+
+
+===============================================
+SIDE EFFECTS:
+===============================================
+
+Side effects is also an important concept of pure and impure function and it can be distinguished such a function
+
+Considering the same example a function creates a side effect when its block of code will change the value of the variable outside of its scope then it causes the side effect
+eventhough the value it sends as a parameter remains the same
+
+Taking the same example, when c=10 and a=2, b=4 the outcome of the above function is 16 but if a function does this in case
+
+c=10;
+
+functionA = (a,b) => {
+    c= a+b;
+    return a + b
+}
+
+then when we console the value of c after the function call then c now becomes 6;
+
+This creates a side effect as it changes the original vlaue of c beyond it's scope. This function now becomes impure function.
+
+***
+IN REACT WE WRITE AN IMPURE FUNCTION. WE ARE GOING TO WRITE HOOKS TO CREATE AN IMPURE FUNCTIONS AND WE ARE CREATING SIDE EFFECTS.
+WE DO HAVE PURE FUNCTIONS BUT BASICALLY WE DO MAKE AN IMPURE FUNCTION WHILE WORKING WITH A FUNCTIONAL COMPONENTS
+***
+
+ 
