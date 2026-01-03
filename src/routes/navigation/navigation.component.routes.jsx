@@ -22,27 +22,22 @@ const Navigation = () => {
                     <AppLogo className='logo' />
                 </Link>
                 <div className='nav-links-container'>
-                    {/* <span>{currentUser ? `Welcome, ${currentUser.displayName}` : ''}</span> */}
-
                     <Link className="nav-link" to='/shop'>
                         SHOP
                     </Link>
 
-                    {
-                        currentUser ? (
-                            <span className="nav-link" onClick={signOutUser}>{' '} SIGN OUT {' '}</span>
-                        ) : (
-                            <Link className="nav-link" to='/auth'>
-                                Sign In
-                            </Link>
-                        )
-                    }
-
+                    {currentUser ? (
+                        <span className="nav-link" onClick={signOutUser}>
+                            SIGN OUT
+                        </span>
+                    ) : (
+                        <Link className="nav-link" to='/auth'>
+                            SIGN IN
+                        </Link>
+                    )}
                     <CartIcon />
                 </div>
-
                 {isCartOpen && <CartDropdown />}
-
             </div>
             <Outlet />
         </Fragment>
