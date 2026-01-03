@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromGoogleAuth } from '../../../utils/firebase/firebase.utils';
 import FormInput from '../form-input/form-input.component';
-import './sign-up-form.styles.scss';
 import Button from '../../buttons/button.component';
 
+import './sign-up-form.styles.scss';
 const SignUpForm = () => {
     const userFormFields = {
         displayName: '',
@@ -41,11 +41,11 @@ const SignUpForm = () => {
                 return;
             }
 
+            // Create user document in Firestore
             await createUserDocumentFromGoogleAuth(response.user, { displayName });
-
+            
             resetFields();
 
-            console.log("User created successfully:", response);
         } catch (error) {
             if (error.code === 'auth/email-already-in-use') {
                 alert("Cannot create user, email already in use");

@@ -1,0 +1,8 @@
+- find the parent in the tree where can collect the data and transfer to the other nodes and it childres where the data is requried.
+- This is a common pattern, but whild drilling the data we unnessarily transfer the data to those components where the data is not at all required.
+- Therefore, we need to find out the way to transfer the data to those childrens which requires the data and we don't drill the down the data to the components childrens who doesnot require this.
+- We use context to directly transfer the data so that we don't have to traverse it in the tree. We do that using context
+
+// context in react
+when we hook the context in the child components it is very significant to understand that 
+when the function is 

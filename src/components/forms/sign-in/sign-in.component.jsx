@@ -1,13 +1,15 @@
 import { useState } from "react";
-import FormInput from "../form-input/form-input.component";
-import { createUserDocumentFromGoogleAuth, signInWithGooglePopup, signInAuthUserWithEmailAndPassword } from "../../../utils/firebase/firebase.utils";
-import './sign-in.form.styles.scss';
+import { signInWithGooglePopup, signInAuthUserWithEmailAndPassword } from "../../../utils/firebase/firebase.utils";
 import Button from "../../buttons/button.component";
+import FormInput from "../form-input/form-input.component";
+
+import './sign-in.form.styles.scss';
+
+const inputFormFields = {
+    email: "",
+    password: ""
+};
 const SignInForm = () => {
-    const inputFormFields = {
-        email: "",
-        password: ""
-    };
 
     const [formFields, setFormFields] = useState(inputFormFields);
     const { email, password } = formFields;
@@ -34,11 +36,20 @@ const SignInForm = () => {
                 console.log("Sign-in failed", response);
                 return;
             }
-            console.log("User signed in successfully:", response);
+
             resetFormFields();
         } catch (error) {
-            console.log("Error during sign-in:", error);
-            alert("Sign-in encountered an error");
+
+            switch (error.code) {
+                case 'auth/wrong-password':
+                    alert('Incorrect password for email');
+                    break;
+                case 'auth/user-not-found':
+                    alert('No user associated with this email');
+                    break;
+                default:
+                    console.log('Error during sign-in:', error);
+            }
         }
     };
 
@@ -47,8 +58,7 @@ const SignInForm = () => {
     };
 
     const logGoogleUser = async () => {
-        const { user } = await signInWithGooglePopup();
-        await createUserDocumentFromGoogleAuth(user);
+        await signInWithGooglePopup();
     }
 
     return (
