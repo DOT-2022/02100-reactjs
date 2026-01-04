@@ -5,7 +5,7 @@ import { CartDropdownContext } from '../../../context/cart-dropdown.context';
 const CartItem = ({ cartItem }) => {
     const { name, imageUrl, price, quantity } = cartItem;
     const { deleteItemFromCart } = useContext(CartDropdownContext);
-    const deleteProductFromCard = () => deleteItemFromCart(cartItem);
+    const deleteProductFromCard = () => deleteItemFromCart(cartItem, false);
 
     return (
         <div className='cart-item-container'>

@@ -18,12 +18,13 @@ const addCartItem = (cartItems, productToAdd) => {
     return [...cartItems, { ...productToAdd, quantity: 1 }];
 };
 
-const deleteCartItem = (cartItems, productToDelete) => {
+const deleteCartItem = (cartItems, productToDelete, shouldRemoveAll) => {
     // find if cartItems contains productToDelete
     const existingCartItem = cartItems.find((cartItem) => cartItem.id === productToDelete.id);
     // if found, decrement quantity or if the quantity 1 then delete the item.
     if (existingCartItem) {
-        if (existingCartItem.quantity === 1) {
+
+        if (existingCartItem.quantity === 1 || shouldRemoveAll) {
             return cartItems.filter((item) => item.id !== productToDelete.id);
         }
 
@@ -41,25 +42,43 @@ export const CartDropdownContext = createContext({
     setIsCartOpen: () => { },
     cartItems: [],
     addItemToCart: () => { },
-    deleteItemFromCart: () => { }
+    deleteItemFromCart: () => { },
+    cartTotal: 0
 });
 
 export const CartDropdownProvider = ({ children }) => {
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [cartItems, setCartItems] = useState([]);
+    const [cartTotal, setCartTotal] = useState(0);
 
     const addItemToCart = (productToAdd) => {
         setCartItems(addCartItem(cartItems, productToAdd));
     }
 
-    const deleteItemFromCart = (productToDelete) => {
-        setCartItems(deleteCartItem(cartItems, productToDelete));
+    const deleteItemFromCart = (productToDelete, shouldRemoveAll) => {
+        setCartItems(deleteCartItem(cartItems, productToDelete, shouldRemoveAll));
     };
 
-    const value = { isCartOpen, setIsCartOpen, cartItems, addItemToCart, deleteItemFromCart };
+
+    const value = {
+        isCartOpen,
+        setIsCartOpen,
+        cartItems,
+        addItemToCart,
+        deleteItemFromCart,
+        cartTotal
+    };
     useEffect(() => {
         setIsCartOpen(isCartOpen);
     }, [isCartOpen]);
+
+    useEffect(() => {
+        const newCartTotal = cartItems.reduce(
+            (total, cartItem) => total + cartItem.quantity * cartItem.price, 0
+        );
+
+        setCartTotal(newCartTotal);
+    }, [cartItems]);
 
     return <CartDropdownContext.Provider value={value}>{children}</CartDropdownContext.Provider>;
 };
